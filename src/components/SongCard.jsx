@@ -6,9 +6,16 @@ import { useDispatch } from 'react-redux';
 import PlayPause from './PlayPause';
 import { playPause, setActiveSong } from '../redux/features/playerSlice';
 
-const SongCard = ({ song, i }) => {
+const SongCard = ({ song, i, isPlaying, activeSong, data }) => {
 
-  const activeSong = 'Test';
+  // the way we figure out if the song is the currently active song and are we currently playing it is in the Discover component. This is where we handle the global state of if we are showing the player or not.
+  const handlePauseClick = () => {
+
+  }
+
+  const handlePlayClick = () => {
+
+  }
   
   return (
   <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
@@ -18,7 +25,13 @@ const SongCard = ({ song, i }) => {
         className={`absolute inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex 
         ${activeSong?.title === song.title ? 'flex bg-black bg-opacity-70' : 'hidden'}`}
       >
-        <PlayPause />
+        <PlayPause 
+          song={song}
+          handlePause={handlePauseClick}
+          handlePlay={handlePlayClick}
+          isPlaying={isPlaying}
+          activeSong={activeSong}
+        />
       </div>
 
       <img src={song.images?.coverart} alt='song_img' />
