@@ -8,13 +8,16 @@ import { playPause, setActiveSong } from '../redux/features/playerSlice';
 
 const SongCard = ({ song, i, isPlaying, activeSong, data }) => {
 
+  const dispatch = useDispatch();
+
   // the way we figure out if the song is the currently active song and are we currently playing it is in the Discover component. This is where we handle the global state of if we are showing the player or not.
   const handlePauseClick = () => {
-
+    dispatch(playPause(false));
   }
 
   const handlePlayClick = () => {
-
+    dispatch(setActiveSong({ song, data, i }));
+    dispatch(playPause(true));
   }
   
   return (
