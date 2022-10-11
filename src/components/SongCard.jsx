@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-indent */
-/* eslint-disable react/self-closing-comp */
+/* eslint-disable */
+
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
