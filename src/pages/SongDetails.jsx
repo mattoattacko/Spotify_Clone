@@ -5,13 +5,28 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DetailsHeader, Error, Loader, RelatedSongs } from '../components';
 
 import { setActiveSong, playPause } from '../redux/features/playerSlice';
-import { useGetSongDetailsQuery } from '../redux/services/shazamCore';
+import { useGetSongDetailsQuery, useGetSongRelatedQuery } from '../redux/services/shazamCore';
+
 
 const SongDetails = () => {
   const dispatch = useDispatch();
   const { songid, id: artistId } = useParams(); // 'songid' is coming from our Routes in App. Getting the 'songid' will allow us to make an API call to get more details about a specific song.
   const { activeSong, isPlaying } = useSelector((state) => state.player); //pulls data from state
   const { data: songData, isFetching: isFetchingSongDetails } = useGetSongDetailsQuery({ songid }); //the song data should contain the lyrics to the song
+  const { data, isFetching: isFetchingRelatedSongs, error } = useGetSongRelatedQuery({ songid }); //pulls data from state
+
+  const handlePauseClick = () => {
+    dispatch(playPause(false));
+  }
+
+  const handlePlayClick = (song, i) => {
+    dispatch(setActiveSong({ song, data, i }));
+    dispatch(playPause(true));
+  }
+
+  if(isFetchingSongDetails || isFetchingRelatedSongs) return <Loader title="Searching song details" />;
+
+  if(error) return <Error message="Error getting details... Please try again" />;
 
   return (
     <div className='flex flex-col'> 
@@ -34,6 +49,15 @@ const SongDetails = () => {
           )}          
         </div>
       </div>
+
+      {/* Related Songs */}
+      <RelatedSongs
+        data={data}
+        isPlaying={isPlaying}
+        activeSong={activeSong}
+        handlePauseClick={handlePauseClick}
+        handlePlayClick={handlePlayClick}      
+      />
     </div>
   );
     
