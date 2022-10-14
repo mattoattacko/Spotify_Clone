@@ -35,7 +35,7 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
 
           {/* Takes us to artist details page. This only shows if we are on the song details page and not on the artists details page */}
           {!artistId && (
-            <Link to={`/artists/${songData?.artists[0].adamid}`}>
+            <Link to={`/artists/${songData?.artists[0]?.adamid}`}>
               <p className="text-base text-gray-400 mt-2">
                 {songData?.subtitle}
               </p>

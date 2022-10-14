@@ -44,7 +44,7 @@ const SongCard = ({ song, i, isPlaying, activeSong, data }) => {
       <p className="font-semibold text-lg text-white truncate"> 
         {/* 'truncate' above will shorten the title if the text is too long */}
         <Link to={`/songs/${song?.key}`}>
-          {song.title}
+          {song?.title}
         </Link>
       </p>      
       <p className="text-sm truncate text-gray-300 mt-1">

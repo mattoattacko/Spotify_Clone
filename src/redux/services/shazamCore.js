@@ -1,5 +1,5 @@
-/* eslint-disable spaced-comment */
-/* eslint-disable arrow-parens */
+/* eslint-disable */
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const shazamCoreApi = createApi({
@@ -16,8 +16,9 @@ export const shazamCoreApi = createApi({
   //building in all of the endpoints of the API we are calling
   endpoints: (builder) => ({
     getTopCharts: builder.query({ query: () => '/charts/world' }),
-    getSongDetails: builder.query({ query: ({ songid }) => `/tracks/details?track_id=${songid}` }),
-    getSongRelated: builder.query({ query: ({ songid }) => `tracks/related?track_id=${songid}` }),
+    getSongDetails: builder.query({ query: ({ songid }) => `/tracks/details?track_id=${ songid }` }),
+    getSongRelated: builder.query({ query: ({ songid }) => `/tracks/related?track_id=${ songid }` }),
+    getArtistDetails: builder.query({ query: (artistId) => `/artists/details?artist_id=${ artistId }` }),
   }),
 });
 
@@ -26,4 +27,5 @@ export const {
   useGetTopChartsQuery,
   useGetSongDetailsQuery,
   useGetSongRelatedQuery,
+  useGetArtistDetailsQuery,
 } = shazamCoreApi;
