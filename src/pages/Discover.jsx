@@ -1,32 +1,28 @@
-/* eslint-disable keyword-spacing */
-/* eslint-disable padded-blocks */
-/* eslint-disable function-paren-newline */
-/* eslint-disable comma-dangle */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable react/jsx-closing-bracket-location */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable semi */
-/* eslint-disable no-unused-vars */
-/* eslint-disable spaced-comment */
-/* eslint-disable jsx-quotes */
+/* eslint-disable */
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Error, Loader, SongCard } from '../components';
 import { genres } from '../assets/constants';
-import { useGetTopChartsQuery } from '../redux/services/shazamCore';
+import { selectGenreListId } from '../redux/features/playerSlice';
+import { useGetSongsByGenreQuery } from '../redux/services/shazamCore';
+
+// still need to add the functionality to send the right genre to our query and then to fetch the right songs. We need to use our <select>. We use <select> when we want to select a piece of state, but we useDispatch when we want to modify the state.  
+// we want to dispatch an action to the store that says what specific genre we want to get. Then with a selector, we can select that modified state. We add the dispatch to the onChange event listener of our <select> element.
+//redux toolkit saves the genres in cache so the loading is super quick
 
 const Discover = () => {
 
   const dispatch = useDispatch();
-  const { activeSong, isPlaying } = useSelector((state) => state.player);
+  const { activeSong, isPlaying, genreListId } = useSelector((state) => state.player);
 
-  const { data, isFetching, error } = useGetTopChartsQuery();
-  const genreTitle = 'Pop'
+  const { data, isFetching, error } = useGetSongsByGenreQuery(genreListId || 'POP');
 
   if(isFetching) return <Loader title='Loading songs...' />
 
   if(error) return <Error title='Error fetching songs' />
+
+  //we destructure the value which is the genre Id, and then we check if the value is === to the genre list ID. We get the title once we find the one that matches.
+  const genreTitle = genres.find(({ value }) => value === genreListId)?.title;
 
   return (
     <div className="flex flex-col">
@@ -37,8 +33,8 @@ const Discover = () => {
 
         {/* Dropdown List */}
         <select
-          onChange={() => {}}
-          value=''
+          onChange={(e) => dispatch(selectGenreListId(e.target.value))} //select genre list is from player slice
+          value={ genreListId || 'pop' }
           className='bg-black text-gray-300 p-3 text-sm rounded-lg outline-none sm:mt-0 mt-5'
         >
           {genres.map((genre) => 
